@@ -8,16 +8,19 @@
                     (cond
                         (table? v) (php/aset a (str k) (phel-to-php v))
                         (or (array? v) (set? v) (tuple? v)) (php/aset a (str k) (phel-to-php v))
+                        (keyword? v) (php/aset a (str k) (str v))
                         true (php/aset a (str k) v)))
                 a)
         (or (array? x) (set? x) (tuple? x))
             (let [a (php/array)]
                 (foreach [v x]
                     (cond
-                        (or (table? x) (struct? x)) (php/apush a (phel-to-php v))
+                        (or (table? v) (struct? v)) (php/apush a (phel-to-php v))
                         (or (array? v) (set? v) (tuple? v)) (php/apush a (phel-to-php v))
+                        (keyword? v) (php/apush a (str v))
                         true (php/apush a v)))
                 a)
+        (keyword? x) (str x)
         true x))
 
 (defn encode [v]
