@@ -1,11 +1,13 @@
 {
     "name": "mabasic/phel-json",
-    "description": "test",
+    "description": "Library for converting Phel datastructures to and from JSON.",
     "license": "MIT",
+    "keywords": ["phel", "php", "json"],
     "authors": [
         {
             "name": "Mario Bašić",
-            "email": "mario@laravelista.hr"
+            "email": "mario@laravelista.hr",
+            "homepage": "https://mariobasic.com"
         }
     ],
     "minimum-stability": "dev",

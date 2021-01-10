@@ -14,7 +14,7 @@
             (let [a (php/array)]
                 (foreach [v x]
                     (cond
-                        (table? v) (php/apush a (phel-to-php v))
+                        (or (table? x) (struct? x)) (php/apush a (phel-to-php v))
                         (or (array? v) (set? v) (tuple? v)) (php/apush a (phel-to-php v))
                         true (php/apush a v)))
                 a)
