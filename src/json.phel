@@ -6,7 +6,7 @@
             (let [a (php/array)]
                 (foreach [k v x]
                     (cond
-                        (table? v) (php/aset a (str k) (phel-to-php v))
+                        (or (table? v) (struct? v)) (php/aset a (str k) (phel-to-php v))
                         (or (array? v) (set? v) (tuple? v)) (php/aset a (str k) (phel-to-php v))
                         (keyword? v) (php/aset a (str k) (str v))
                         true (php/aset a (str k) v)))
