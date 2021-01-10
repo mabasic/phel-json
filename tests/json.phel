@@ -1,0 +1,15 @@
+(ns mabasic\json\tests\json
+    (:require mabasic\json\json :refer [encode])
+    (:require phel\test :refer [deftest is]))
+
+(deftest test-encode-tuple
+    (is (= "[1,2,3]" (encode [1 2 3]))))
+
+(deftest test-encode-array
+    (is (= "[1,2,3]" (encode @[1 2 3]))))
+
+(deftest test-encode-set
+    (is (= "[1,2,3]" (encode (set 1 2 3)))))
+
+(deftest test-encode-table
+    (is (= "{\"first_name\":\"Mario\",\"last_name\":\"Basic\"}" (encode @{"first_name" "Mario"  "last_name" "Basic"}))))

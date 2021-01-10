@@ -1,0 +1,28 @@
+{
+    "name": "mabasic/phel-json",
+    "description": "test",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mario Bašić",
+            "email": "mario@laravelista.hr"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "phel/phel": "dev-master"
+    },
+    "extra": {
+        "phel": {
+            "loader": {
+                "mabasic\\json\\": "src/"
+            },
+            "loader-dev": {
+                "mabasic\\json\\tests\\": "tests/"
+            },
+            "tests": [
+                "tests/"
+            ]
+        }
+    }
+}

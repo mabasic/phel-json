@@ -1,0 +1,24 @@
+(ns mabasic\json\json)
+
+(defn- phel-to-php [x]
+    (cond
+        (or (table? x) (struct? x))
+            (let [a (php/array)]
+                (foreach [k v x]
+                    (cond
+                        (table? v) (php/aset a (str k) (phel-to-php v))
+                        (or (array? v) (set? v) (tuple? v)) (php/aset a (str k) (phel-to-php v))
+                        true (php/aset a (str k) v)))
+                a)
+        (or (array? x) (set? x) (tuple? x))
+            (let [a (php/array)]
+                (foreach [v x]
+                    (cond
+                        (table? v) (php/apush a (phel-to-php v))
+                        (or (array? v) (set? v) (tuple? v)) (php/apush a (phel-to-php v))
+                        true (php/apush a v)))
+                a)
+        true x))
+
+(defn encode [v]
+    (php/json_encode (phel-to-php v)))
