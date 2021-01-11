@@ -22,6 +22,12 @@
             "[1,2,\"string\"]"
             (json/encode [1 2 "string"])))
     (is (=
+            "[1,2,[1,2,3]]"
+            (json/encode [1 2 (set 1 2 3)])))
+    (is (=
+            "[1,2,[1,2,[1,2]]]"
+            (json/encode [1 2 (set 1 2 (set 1 2))])))
+    (is (=
             "[1,2,{\":year\":2020,\"planet\":\"Earth\"}]"
             (json/encode [1 2 @{:year 2020
                                 "planet" "Earth"}])))
@@ -45,6 +51,15 @@
     (is (=
         "{\"first_name\":\"Mario\",\"last_name\":\"Basic\"}"
         (json/encode @{"first_name" "Mario"  "last_name" "Basic"})))
+    (is (=
+        "{\"first_name\":\"Mario\",\"last_name\":\"Basic\",\"set\":[1,2]}"
+        (json/encode @{"first_name" "Mario"  "last_name" "Basic" "set" (set 1 2)})))
+    (is (=
+        "{\"first_name\":\"Mario\",\"last_name\":\"Basic\",\"set\":[1,2,[3,4]]}"
+        (json/encode @{"first_name" "Mario"  "last_name" "Basic" "set" (set 1 2 (set 3 4))})))
+    (is (=
+        "{\"first_name\":\"Mario\",\"last_name\":\"Basic\",\"(set 1 2)\":[1,2,[3,4]]}"
+        (json/encode @{"first_name" "Mario"  "last_name" "Basic" (set 1 2) (set 1 2 (set 3 4))})))
     (is (=
         "{\"first_name\":[\"Super\",\":mario\"],\"last_name\":\"Basic\"}"
         (json/encode @{"first_name" @["Super" :mario]
