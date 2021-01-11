@@ -44,7 +44,7 @@ I would like to extend my thanks to the following sponsors & backers for funding
 
 ## Contributing
 
-Thank you for considering contributing to Comments! The contribution guide can be found [Here](https://mariobasic.com/contributing).
+Thank you for considering contributing to Phel-json! The contribution guide can be found [Here](https://mariobasic.com/contributing).
 
 
 ## Code of Conduct
@@ -54,4 +54,4 @@ In order to ensure that the open-source community is welcoming to all, please re
 
 ## License
 
-Comments is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Phel-json is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
