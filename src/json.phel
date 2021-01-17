@@ -2,17 +2,14 @@
 
 (defn- phel-to-php [x]
     (cond
-        (or (table? x) (struct? x) (array? x) (tuple? x))
+        (or (table? x) (struct? x) (array? x) (tuple? x) (set? x))
             (let [a (php/array)]
                 (foreach [k v x]
-                    (php/aset a (str k) (phel-to-php v)))
+                    (php/aset a (phel-to-php k) (phel-to-php v)))
                 a)
-        (set? x)
-            (let [a (php/array)]
-                (foreach [v x]
-                    (php/apush a (phel-to-php v)))
-                a)
-        (keyword? x) (str x)
+        (symbol? x) (str (php/-> x (getName)))
+        (keyword? x) (str (php/-> x (getName)))
+        (float? x) (str x)
         true x))
 
 (defn encode [v]
