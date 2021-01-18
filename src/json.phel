@@ -1,12 +1,28 @@
-(ns mabasic\json\json)
+(ns mabasic\json\json
+    (:use \Exception))
+
+(defn- datastructure? [x]
+    (or (table? x) (struct? x) (array? x) (tuple? x) (set? x)))
+
+(def- invalid-key-message "Key cannot be a datastructure.")
 
 (defn- phel-to-php [x]
     (cond
-        (or (table? x) (struct? x) (array? x) (tuple? x) (set? x))
-            (let [a (php/array)]
+        (datastructure? x)
+            (let [arr (php/array)]
                 (foreach [k v x]
-                    (php/aset a (phel-to-php k) (phel-to-php v)))
-                a)
+                    (if (datastructure? k) (throw (php/new Exception invalid-key-message)))
+                    (php/aset arr (phel-to-php k) (phel-to-php v)))
+                arr)
+            # (reduce
+            #     (fn [arr [k v]]
+            #         (do
+            #             (if (datastructure? k)
+            #                 (throw (php/new Exception invalid-key-message)))
+            #             (php/aset arr (phel-to-php k) (phel-to-php v))
+            #             arr))
+            #     (php/array)
+            #     x)
         (symbol? x) (str (php/-> x (getName)))
         (keyword? x) (str (php/-> x (getName)))
         (float? x) (str x)
@@ -14,3 +30,5 @@
 
 (defn encode [v]
     (php/json_encode (phel-to-php v)))
+
+# (reduce (fn [arr [k v]] (do (php/aset arr k v) arr)) (php/array) @{"a" 1 "b" 2})

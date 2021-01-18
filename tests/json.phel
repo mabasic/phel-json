@@ -9,7 +9,7 @@
     (is (= "\"string\"" (json/encode "string")))
     (is (= "\"keyword\"" (json/encode :keyword)))
     (is (= "\"symbol\"" (json/encode 'symbol)))
-    (is (= "3.14" (json/encode 3.14)))
+    (is (= "\"3.14\"" (json/encode 3.14)))
     (is (= "1" (json/encode 1))))
 
 (deftest test-encode-tuple
@@ -66,7 +66,7 @@
         (json/encode @{"first_name" @["Super" :mario]
                        "last_name" "Basic"})))
     (is (=
-        "{\"first_name\":[\"Super\",\"mario\"],\"last_name\":\"Basic\"}"
+        "{\"first_name\":[\"Super\",\"mario\"],\"last_name\":\"Basic\",\"3.14\":\"Value of PI.\"}"
         (json/encode @{"first_name" @["Super" :mario]
                        "last_name" "Basic"
                        3.14 "Value of PI."})))
