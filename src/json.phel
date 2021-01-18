@@ -9,11 +9,21 @@
 (defn- phel-to-php [x]
     (cond
         (datastructure? x)
+            # foreach solution - success
             (let [arr (php/array)]
                 (foreach [k v x]
                     (if (datastructure? k) (throw (php/new Exception invalid-key-message)))
                     (php/aset arr (phel-to-php k) (phel-to-php v)))
                 arr)
+
+            # for solution - fail
+            # (for [[k v] :pairs x]
+            #     (if (datastructure? k) (throw (php/new Exception invalid-key-message)))
+            #     (php-associative-array (phel-to-php k) (phel-to-php v))
+            #     # (php/aset arr (phel-to-php k) (phel-to-php v))
+            #     )
+
+            # reduct solution - fail
             # (reduce
             #     (fn [arr [k v]]
             #         (do
@@ -30,5 +40,3 @@
 
 (defn encode [v]
     (php/json_encode (phel-to-php v)))
-
-# (reduce (fn [arr [k v]] (do (php/aset arr k v) arr)) (php/array) @{"a" 1 "b" 2})
