@@ -1,42 +1,18 @@
 (ns mabasic\json\json
     (:use \Exception))
 
-(defn- datastructure? [x]
-    (or (table? x) (struct? x) (array? x) (tuple? x) (set? x)))
-
-(def- invalid-key-message "Key cannot be a datastructure.")
-
 (defn- phel-to-php [x]
     (cond
-        (datastructure? x)
-            # foreach solution - success
+        (php/is_iterable x)
             (let [arr (php/array)]
                 (foreach [k v x]
-                    (if (datastructure? k) (throw (php/new Exception invalid-key-message)))
+                    (if (php/is_iterable k) (throw (php/new Exception "Key cannot be iterable.")))
                     (php/aset arr (phel-to-php k) (phel-to-php v)))
                 arr)
-
-            # for solution - fail
-            # (for [[k v] :pairs x]
-            #     (if (datastructure? k) (throw (php/new Exception invalid-key-message)))
-            #     (php-associative-array (phel-to-php k) (phel-to-php v))
-            #     # (php/aset arr (phel-to-php k) (phel-to-php v))
-            #     )
-
-            # reduct solution - fail
-            # (reduce
-            #     (fn [arr [k v]]
-            #         (do
-            #             (if (datastructure? k)
-            #                 (throw (php/new Exception invalid-key-message)))
-            #             (php/aset arr (phel-to-php k) (phel-to-php v))
-            #             arr))
-            #     (php/array)
-            #     x)
         (symbol? x) (str (php/-> x (getName)))
         (keyword? x) (str (php/-> x (getName)))
         (float? x) (str x)
         true x))
 
-(defn encode [v]
-    (php/json_encode (phel-to-php v)))
+(defn encode [value]
+    (php/json_encode (phel-to-php value)))
