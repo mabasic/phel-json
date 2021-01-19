@@ -14,10 +14,10 @@
         (float? x) (str x)
         true x))
 
-# (defn encode [value & @{:flags flags :depth depth}]
-#     (let [flags (or flags 0)
-#           depth (or depth 512)]
-#         (php/json_encode (phel-to-php value) flags depth)))
-
-(defn encode [value]
-    (php/json_encode (phel-to-php value)))
+(defn encode [value & [@{:flags flags :depth depth}]]
+    (let [flags (or flags 0)
+          depth (or depth 512)]
+        (if (not (int? flags)) (throw (php/new Exception "Flags must be an integer.")))
+        (if (not (int? depth)) (throw (php/new Exception "Depth must be an integer.")))
+        (if (not (> depth 0)) (throw (php/new Exception "Depth must be greater than zero.")))
+        (php/json_encode (phel-to-php value) flags depth)))

@@ -1,0 +1,10 @@
+(ns mabasic\json\tests\encode\depth
+    (:require mabasic\json\json)
+    (:require phel\test :refer [deftest is]))
+
+(def- sample-data @{:level1 @{:level2 "Level 2"}  :level11 "one"})
+
+(deftest test-depth
+    (is (=
+            "{\"and\":\"a \u0026 b\"}"
+            (json/encode sample-data @{:depth 3}))))
