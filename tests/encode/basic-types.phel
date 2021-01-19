@@ -1,0 +1,27 @@
+(ns mabasic\json\tests\encode\basic-types
+    (:require mabasic\json\json)
+    (:require phel\test :refer [deftest is]))
+
+(deftest test-nil
+    (is (= "null" (json/encode nil))))
+
+(deftest test-true
+    (is (= "true" (json/encode true))))
+
+(deftest test-false
+    (is (= "false" (json/encode false))))
+
+(deftest test-integer
+    (is (= "1" (json/encode 1))))
+
+(deftest test-float
+    (is (= "\"3.14\"" (json/encode 3.14))))
+
+(deftest test-string
+    (is (= "\"string\"" (json/encode "string"))))
+
+(deftest test-symbol
+    (is (= "\"keyword\"" (json/encode :keyword))))
+
+(deftest test-symbol
+    (is (= "\"symbol\"" (json/encode 'symbol))))

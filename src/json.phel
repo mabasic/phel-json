@@ -14,5 +14,10 @@
         (float? x) (str x)
         true x))
 
+# (defn encode [value & @{:flags flags :depth depth}]
+#     (let [flags (or flags 0)
+#           depth (or depth 512)]
+#         (php/json_encode (phel-to-php value) flags depth)))
+
 (defn encode [value]
     (php/json_encode (phel-to-php value)))

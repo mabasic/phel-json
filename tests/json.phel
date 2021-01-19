@@ -2,16 +2,6 @@
     (:require mabasic\json\json)
     (:require phel\test :refer [deftest is]))
 
-(deftest test-encode-basic-types
-    (is (= "null" (json/encode nil)))
-    (is (= "true" (json/encode true)))
-    (is (= "false" (json/encode false)))
-    (is (= "\"string\"" (json/encode "string")))
-    (is (= "\"keyword\"" (json/encode :keyword)))
-    (is (= "\"symbol\"" (json/encode 'symbol)))
-    (is (= "\"3.14\"" (json/encode 3.14)))
-    (is (= "1" (json/encode 1))))
-
 (deftest test-encode-tuple
     (is (=
             "[1,2,3]"
