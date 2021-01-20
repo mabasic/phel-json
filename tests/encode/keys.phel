@@ -1,0 +1,52 @@
+(ns mabasic\json\tests\encode\keys
+    (:require mabasic\json\json)
+    (:require phel\test :refer [deftest is]))
+
+(deftest valid-keys
+    (is
+        (= "{\"string\":\"String\"}" (json/encode @{"string" "String"}))
+        "It tests if string is a valid key.")
+    (is
+        (= "{\"1\":\"One\"}" (json/encode @{1 "One"}))
+        "It tests if integer is a valid key.")
+    (is
+        (= "{\"3.14\":\"PI\"}" (json/encode @{3.14 "PI"}))
+        "It tests if float is a valid key.")
+    (is
+        (= "{\"keyword\":\"Keyword\"}" (json/encode @{:keyword "Keyword"}))
+        "It tests if keyword is a valid key.")
+    (is
+        (= "{\"symbol\":\"Symbol\"}" (json/encode @{'symbol "Symbol"}))
+        "It tests if symbol is a valid key."))
+
+(deftest invalid-keys
+    (is
+        (thrown-with-msg?
+            Exception "Key can only be an integer, float, symbol, keyword or a string."
+            (json/encode @{(set 1 2 3) "Set"}))
+        "It tests if set is a valid key.")
+    (is
+        (thrown-with-msg?
+            Exception "Key can only be an integer, float, symbol, keyword or a string."
+            (json/encode @{[1 2 3] "Tuple"}))
+        "It tests if tuple is a valid key.")
+    (is
+        (thrown-with-msg?
+            Exception "Key can only be an integer, float, symbol, keyword or a string."
+            (json/encode @{@[1 2 3] "Array"}))
+        "It tests if array is a valid key.")
+    (is
+        (thrown-with-msg?
+            Exception "Key can only be an integer, float, symbol, keyword or a string."
+            (json/encode @{@{:hello "World!"} "Table"}))
+        "It tests if table is a valid key.")
+    (is
+        (thrown-with-msg?
+            Exception "Key can only be an integer, float, symbol, keyword or a string."
+            (json/encode @{(php/new \stdClass) "stdClass"}))
+        "It tests if stdClass is a valid key.")
+    (is
+        (thrown-with-msg?
+            Exception "Key can only be an integer, float, symbol, keyword or a string."
+            (json/encode @{(php/new \DateTime) "DateTime"}))
+        "It tests if DateTime is a valid key."))

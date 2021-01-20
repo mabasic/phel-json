@@ -1,4 +1,4 @@
-(ns mabasic\json\tests\encode\basic-types
+(ns mabasic\json\tests\encode\value
     (:require mabasic\json\json)
     (:require phel\test :refer [deftest is]))
 
@@ -20,8 +20,106 @@
 (deftest test-string
     (is (= "\"string\"" (json/encode "string"))))
 
-(deftest test-symbol
+(deftest test-keyword
     (is (= "\"keyword\"" (json/encode :keyword))))
 
 (deftest test-symbol
     (is (= "\"symbol\"" (json/encode 'symbol))))
+
+(deftest test-tuple
+    (is (=
+            "[1,2,3]"
+            (json/encode [1 2 3])))
+    (is (=
+            "[1,2,[1,2]]"
+            (json/encode [1 2 [1 2]])))
+    (is (=
+            "[1,2,\"string\"]"
+            (json/encode [1 2 "string"])))
+    (is (=
+            "[1,2,[1,2,3]]"
+            (json/encode [1 2 (set 1 2 3)])))
+    (is (=
+            "[1,2,[1,2,[1,2]]]"
+            (json/encode [1 2 (set 1 2 (set 1 2))])))
+    (is (=
+            "[1,2,{\"year\":2020,\"planet\":\"Earth\"}]"
+            (json/encode [1 2 @{:year 2020
+                                "planet" "Earth"}])))
+    (is (=
+            "[1,2,{\"year\":2020,\"planet\":\"Earth\",\"tuple\":[\"multi\",\"ple\"]}]"
+            (json/encode [1 2 @{:year 2020
+                                "planet" "Earth"
+                                "tuple" ["multi" "ple"]}]))))
+
+(deftest test-array
+    (is (= "[1,2,3]" (json/encode @[1 2 3])))
+    (is (= "[1,2,[1,2]]" (json/encode @[1 2 @[1 2]]))))
+
+(deftest test-set
+    (is (= "[1,2,3]" (json/encode (set 1 2 3))))
+    (is (= "[1,2,[1,2]]" (json/encode (set 1 2 (set 1 2))))))
+
+(defstruct book [title pages year])
+
+(deftest test-table
+    (is
+        (=
+            "{\"first_name\":\"Mario\",\"last_name\":\"Basic\"}"
+            (json/encode @{"first_name" "Mario"
+                           "last_name" "Basic"})))
+    (is
+        (=
+            "{\"first_name\":\"Mario\",\"last_name\":\"Basic\",\"set\":[1,2]}"
+            (json/encode @{"first_name" "Mario"
+                           "last_name" "Basic"
+                           "set" (set 1 2)})))
+    (is
+        (=
+            "{\"first_name\":\"Mario\",\"last_name\":\"Basic\",\"set\":[1,2,[3,4]]}"
+            (json/encode @{"first_name" "Mario"
+                           "last_name" "Basic"
+                           "set" (set 1 2 (set 3 4))})))
+    (is
+        (=
+            "{\"first_name\":\"Mario\",\"last_name\":\"Basic\",\"set\":[1,2,[\"three\",4]]}"
+            (json/encode @{"first_name" "Mario"
+                           "last_name" "Basic"
+                           "set" (set 1 2 (set 'three 4))})))
+    (is
+        (thrown-with-msg?
+            \Exception "Key cannot be iterable."
+            (json/encode
+                @{
+                    @{'first_name "Mario"
+                      'last_name "Basic"}
+                    "Is a person."})))
+    (is
+        (=
+            "{\"first_name\":[\"Super\",\"mario\"],\"last_name\":\"Basic\"}"
+            (json/encode @{"first_name" @["Super"
+                                          :mario]
+                           "last_name" "Basic"})))
+    (is
+        (=
+            "{\"first_name\":[\"Super\",\"mario\"],\"last_name\":\"Basic\",\"3.14\":\"Value of PI.\"}"
+            (json/encode @{"first_name" @["Super"
+                                          :mario]
+                           "last_name" "Basic"
+                           3.14 "Value of PI."})))
+    (let [dictionary (book "Dictionary" 100 2020)]
+        (is
+            (=
+                "{\"first_name\":\"Mario\",\"last_name\":\"Basic\",\"authored\":{\"title\":\"Dictionary\",\"pages\":100,\"year\":2020}}"
+                (json/encode @{"first_name" "Mario"
+                               "last_name" "Basic"
+                               :authored dictionary})))))
+
+(defstruct person [first_name last_name age])
+
+(deftest test-struct
+    (let [me (person "Mario" "Basic" 30)]
+        (is
+            (=
+                "{\"first_name\":\"Mario\",\"last_name\":\"Basic\",\"age\":30}"
+                (json/encode me)))))

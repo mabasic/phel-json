@@ -2,9 +2,27 @@
     (:require mabasic\json\json)
     (:require phel\test :refer [deftest is]))
 
-(def- sample-data @{:level1 @{:level2 "Level 2"}  :level11 "one"})
+# (def- sample-data @{:level1 @{:level2 "Level 2"}  :level11 "one"})
 
-(deftest test-depth
-    (is (=
-            "{\"and\":\"a \u0026 b\"}"
-            (json/encode sample-data @{:depth 3}))))
+# (deftest test-depth
+#     (is (=
+#             "{\"and\":\"a \u0026 b\"}"
+#             (json/encode sample-data @{:depth 3}))))
+
+# TODO: Find out what does depth do in json_encode?
+
+(deftest invalid-depth
+    (is
+        (thrown-with-msg?
+            Exception "Depth must be an integer."
+            (json/encode
+                @{:and "a & b"}
+                @{:depth "depth"}))
+        "It tests if depth parameter is an integer.")
+    (is
+        (thrown-with-msg?
+            Exception "Depth must be greater than zero."
+            (json/encode
+                @{:and "a & b"}
+                @{:depth 0}))
+        "It tests if depth parameter is greater than zero."))
