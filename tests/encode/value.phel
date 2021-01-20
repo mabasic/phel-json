@@ -87,14 +87,6 @@
                            "last_name" "Basic"
                            "set" (set 1 2 (set 'three 4))})))
     (is
-        (thrown-with-msg?
-            \Exception "Key cannot be iterable."
-            (json/encode
-                @{
-                    @{'first_name "Mario"
-                      'last_name "Basic"}
-                    "Is a person."})))
-    (is
         (=
             "{\"first_name\":[\"Super\",\"mario\"],\"last_name\":\"Basic\"}"
             (json/encode @{"first_name" @["Super"
