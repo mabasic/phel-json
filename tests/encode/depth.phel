@@ -2,14 +2,18 @@
     (:require mabasic\json\json)
     (:require phel\test :refer [deftest is]))
 
-# (def- sample-data @{:level1 @{:level2 "Level 2"}  :level11 "one"})
-
-# (deftest test-depth
-#     (is (=
-#             "{\"and\":\"a \u0026 b\"}"
-#             (json/encode sample-data @{:depth 3}))))
-
-# TODO: Find out what does depth do in json_encode?
+(deftest depth
+    (let [sample-data @[1 [2] [[3]]]]
+        (is
+            (=
+                "[1,[2],[[3]]]"
+                (json/encode sample-data @{:depth 3}))
+            "It returns a string containing the JSON representation of the supplied value if depth is equal to or higher than entered depth.")
+        (is
+            (=
+                false
+                (json/encode sample-data @{:depth 2}))
+            "It returns false if data depth is higher than entered depth.")))
 
 (deftest invalid-depth
     (is
