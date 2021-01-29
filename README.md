@@ -6,10 +6,11 @@ Phel library for converting [Phel](https://phel-lang.org/) datastructures to and
 
 ## Overview
 
-This Phel library is a wrapper library around PHP `json_encode` and `json_decode` functions. It converts Phel datastructures and basic types to a format that PHP understands before calling `(php/json_encode)`.
+This Phel library is a wrapper library around PHP `json_encode` and `json_decode` functions. 
 
-It should also generating valid Phel datastructures from given JSON strings (*coming soon*).
+It converts Phel datastructures and basic types to a format that PHP understands before calling `(php/json_encode)`.
 
+It generates valid Phel datastructures (table, array) from given JSON strings using `(php/json_decode)`.    
 
 ## Installation
 
@@ -23,18 +24,23 @@ composer require mabasic/phel-json
 
 This Phel library has two public method:
 
-- `(json/encode x)`
-- `(json/decode x)` (*coming soon*)
+- `(json/encode value @{:depth 512 :flags 0})`
+- `(json/decode json @{:depth 512 :flags 0})` 
 
 
 ```phel
 (ns your\namespace
     (:require mabasic\json\json))
 
-(println (json/encode @{"name" "Phel"  "type" "lisp"}))
+(def result (json/encode @{:name "Phel"  :type "lisp"}))
+
+# result
+# {"name": "Phel", "type": "lisp"}
+
+(println (json/decode result))
 
 # output
-# {"name": "Phel", "type": "lisp"}
+# @{:name "Phel"  :type "Lisp"}
 ```
 
 ## Sponsors & Backers
