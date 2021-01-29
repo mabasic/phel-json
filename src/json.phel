@@ -27,16 +27,9 @@
         (when-not (> depth 0) (throw (php/new Exception "Depth must be greater than zero.")))
         (php/json_encode (encode-value value) flags depth)))
 
-# Taken from: https://stackoverflow.com/a/13522545
-(defn- php-indexed-array? [arr]
-    (cond
-        (not (php-array? arr)) false
-        (<= (count arr) 0) true
-        true (= (keys arr) (range 0 (count arr)))))
-
 (defn- decode-value [x]
     (cond
-        (php-indexed-array? x) (for [v :in x] (decode-value v))
+        (indexed? x) (for [v :in x] (decode-value v))
         (php-array? x)
             (let [table @{}]
                 (foreach [k v x]

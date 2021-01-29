@@ -16,14 +16,14 @@
 (deftest flag
     (is
         (=
-            "{\"and\":\"a \u0026 b\"}"
+            @{:employee @{:name "sonoo 0xC0" :salary 56000 :married true}}
             (json/decode sample-data @{:flags JSON_INVALID_UTF8_IGNORE}))
         "It tests flags parameter with one flag."))
 
 (deftest flags
     (is
         (=
-            "{\"comparison\":\"a \u003E b\",\"and\":\"a \u0026 b\"}"
+            @{:employee @{:name "sonoo 0xC0" :salary 56000 :married true}}
             (json/decode sample-data @{:flags (bit-or
                                                 JSON_INVALID_UTF8_IGNORE
                                                 JSON_INVALID_UTF8_SUBSTITUTE)}))
