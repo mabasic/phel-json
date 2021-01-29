@@ -12,7 +12,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "phel/phel": "dev-master"
+        "phel-lang/phel-lang": "dev-master"
     },
     "extra": {
         "phel": {

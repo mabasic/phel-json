@@ -1,0 +1,24 @@
+(ns mabasic\json\tests\decode\value
+    (:require mabasic\json\json)
+    (:require phel\test :refer [deftest is]))
+
+(def sample-data (php/file_get_contents (str __DIR__ "/sample.json")))
+
+(deftest test-something
+    (is
+        (=
+            @{
+                :firstName "Rack"
+                :lastName "Jackon"
+                :gender "man"
+                :age 24
+                :address @{
+                    :streetAddress 126
+                    :city "San Jone"
+                    :state "CA"
+                    :postalCode 394221}
+                :phoneNumbers @[
+                    @{
+                        :type "home"
+                        :number 7383627627}]}
+            (json/decode sample-data))))
