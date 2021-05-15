@@ -18,7 +18,7 @@
     (float? x) (str x)
     true x))
 
-(defn encode [value & [@{:flags flags :depth depth}]]
+(defn encode [value & [{:flags flags :depth depth}]]
   (let [flags (or flags 0)
         depth (or depth 512)]
     (when (php/is_resource value) (throw (php/new Exception "Value can be any type except a resource.")))
@@ -29,15 +29,16 @@
 
 (defn- decode-value [x]
   (cond
-    (indexed? x) (for [v :in x] (decode-value v))
+    (indexed? x)
+    (for [v :in x] (decode-value v))
     (php-array? x)
-    (let [table @{}]
+    (let [hashmap (transient {})]
       (foreach [k v x]
-        (put table (keyword k) (decode-value v)))
-      table)
+        (put hashmap (keyword k) (decode-value v)))
+      (persistent hashmap))
     true x))
 
-(defn decode [json & [@{:flags flags :depth depth}]]
+(defn decode [json & [{:flags flags :depth depth}]]
   (let [flags (or flags 0)
         depth (or depth 512)]
     (when-not (string? json) (throw (php/new Exception "Json must be a string.")))

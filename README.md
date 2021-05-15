@@ -10,7 +10,7 @@ This Phel library is a wrapper library around PHP `json_encode` and `json_decode
 
 It converts Phel datastructures and basic types to a format that PHP understands before calling `(php/json_encode)`.
 
-It generates valid Phel datastructures (table, array) from given JSON strings using `(php/json_decode)`.    
+It generates valid Phel datastructures (map, vector) from given JSON strings using `(php/json_decode)`.    
 
 ## Installation
 
@@ -24,15 +24,15 @@ composer require mabasic/phel-json
 
 This Phel library has two public method:
 
-- `(json/encode value @{:depth 512 :flags 0})`
-- `(json/decode json @{:depth 512 :flags 0})` 
+- `(json/encode value {:depth 512 :flags 0})`
+- `(json/decode json {:depth 512 :flags 0})` 
 
 
 ```phel
 (ns your\namespace
     (:require mabasic\json\json))
 
-(def result (json/encode @{:name "Phel"  :type "lisp"}))
+(def result (json/encode {:name "Phel"  :type "lisp"}))
 
 # result
 # {"name": "Phel", "type": "lisp"}
@@ -40,7 +40,7 @@ This Phel library has two public method:
 (println (json/decode result))
 
 # output
-# @{:name "Phel"  :type "Lisp"}
+# {:name "Phel"  :type "Lisp"}
 ```
 
 ## Sponsors & Backers
