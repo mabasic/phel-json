@@ -10,21 +10,10 @@
             "homepage": "https://mariobasic.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "phel-lang/phel-lang": "^0.3.2"
+        "phel-lang/phel-lang": "^0.4"
     },
-    "extra": {
-        "phel": {
-            "loader": {
-                "mabasic\\json\\": "src/"
-            },
-            "loader-dev": {
-                "mabasic\\json\\tests\\": "tests/"
-            },
-            "tests": [
-                "tests/"
-            ]
-        }
+    "scripts": {
+        "test": "vendor/bin/phel test"
     }
 }
