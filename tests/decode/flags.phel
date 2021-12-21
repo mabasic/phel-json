@@ -9,7 +9,7 @@
 (deftest invalid-flag
   (is
    (thrown-with-msg?
-    Exception "Flags must be an integer."
+    \Exception "Flags must be an integer."
     (json/decode sample-data {:flags "flags"}))
    "It tests if flags parameter is an integer."))
 

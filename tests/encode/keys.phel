@@ -1,6 +1,7 @@
 (ns mabasic\json\tests\encode\keys
   (:require mabasic\json\json)
-  (:require phel\test :refer [deftest is]))
+  (:require phel\test :refer [deftest is])
+  (:use \Exception))
 
 (deftest valid-keys
   (is

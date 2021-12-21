@@ -7,7 +7,7 @@
 (deftest invalid-flag
   (is
    (thrown-with-msg?
-    Exception "Flags must be an integer."
+    \Exception "Flags must be an integer."
     (json/encode
      {:and "a & b"}
      {:flags "flags"}))
